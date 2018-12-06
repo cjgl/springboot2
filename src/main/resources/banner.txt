@@ -1,0 +1,5 @@
+spring boot component:
+JPA
+HSQLDB
+Mybatis
+freemarker

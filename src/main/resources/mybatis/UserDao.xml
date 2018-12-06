@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.cjgl.springboot.dao.UserDao" >
+	<insert id="addUser" parameterType="User">
+		insert into user(name, pwd, depid) values(#{name}, #{pwd}, #{department.id})
+	</insert>
+
+	<update id="modUser" parameterType="User">
+		update user
+		set name = #{name}, pwd = #{pwd}, depid = #{department.id}
+		where id = #{id}
+	</update>
+	
+	<delete id="delUser" parameterType="User">
+		delete from user where id = #{id}
+	</delete>
+	
+	<select id="queryUsers" parameterType="User" resultMap="UserResult">
+		select * from user
+	</select>
+	
+	<select id="queryUsers1" parameterType="User" resultMap="UserResult1">
+		select u.id as u_id, u.name as u_name, u.pwd as u_pwd,
+			u.createtime as u_createtime, u.updatetime as u_updatetime,
+			d.id as d_id, d.name as d_name, d.remark as d_remark
+		from user u left join department d on u.depid = d.id
+	</select>
+	
+	<!-- 高级映射 -->
+	<resultMap id="UserResult" type="User">
+		<association property="department" column="depid"
+			javaType="Department" select="selectDepartment" />
+	</resultMap>
+	
+	<select id="selectDepartment" parameterType="int" resultType="Department">
+		select * from department where id = #{id}
+	</select>
+	
+	<!-- 高级映射 -->
+	<resultMap id="UserResult1" type="User">
+		<id property="id" column="u_id" />
+		<result property="name" column="u_name"/>
+		<result property="pwd" column="u_pwd"/>
+		<result property="createtime" column="u.createtime"/>
+		<result property="updatetime" column="u_updatetime"/>
+		<association property="department" column="depid" javaType="Department">
+			<id property="id" column="d_id" />
+			<result property="name" column="d_name"/>
+			<result property="remark" column="d_remark"/>
+		</association>
+	</resultMap>
+</mapper>
