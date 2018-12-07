@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="static/css/bootstrap.min.css">
+<link rel="stylesheet" href="static/css/bootstrap-table.css" />
+<link rel="stylesheet" href="static/css/jquery.treegrid.css">
+    
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="static/js/jquery-3.3.1.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/bootstrap-table.min.js"></script>
+<script src="static/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="static/js/bootstrap-table-treegrid.js"></script>
+<script src="static/js/jquery.treegrid.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Table Treegrid</h1>
+    <table id="table"></table>
+  </div>
+</body>
+
+
+
+<script type="text/javascript">
+  var $table = $('#table');
+  $(function() {
+    $table.bootstrapTable({
+      url: 'static/json/treegrid.json',
+      height: $(window).height(),
+      striped: true,
+      sidePagination: 'server',
+      idField: 'id',
+      columns: [
+        {
+          field: 'ck',
+          checkbox: true
+        },
+        {
+          field: 'name',
+          title: '名称'
+        },
+        // {field: 'id', title: '编号', sortable: true, align: 'center'},
+        // {field: 'pid', title: '所属上级'},
+        {
+          field: 'status',
+          title: '状态',
+          align: 'center',
+          formatter: 'statusFormatter'
+        },
+        {
+          field: 'permissionValue',
+          title: '权限值'
+        }
+      ],
+      // bootstrap-table-tree-column.js 插件配置
+      // treeShowField: 'name',
+      // parentIdField: 'pid'
+      // bootstrap-table-tree-column.js 插件配置
+
+      // bootstrap-table-treegrid.js 插件配置
+      treeShowField: 'name',
+      parentIdField: 'pid',
+      onLoadSuccess: function(data) {
+        console.log('load');
+        // jquery.treegrid.js
+        $table.treegrid({
+          // initialState: 'collapsed',
+          treeColumn: 1,
+          // expanderExpandedClass: 'glyphicon glyphicon-minus',
+          // expanderCollapsedClass: 'glyphicon glyphicon-plus',
+          onChange: function() {
+            $table.bootstrapTable('resetWidth');
+          }
+        });
+      }
+      // bootstrap-table-treetreegrid.js 插件配置
+    });
+  });
+
+
+  // 格式化类型
+  function typeFormatter(value, row, index) {
+    if (value === 'menu') {
+      return '菜单';
+    }
+    if (value === 'button') {
+      return '按钮';
+    }
+    if (value === 'api') {
+      return '接口';
+    }
+    return '-';
+  }
+
+  // 格式化状态
+  function statusFormatter(value, row, index) {
+    if (value === 1) {
+      return '<span class="label label-success">正常</span>';
+    } else {
+      return '<span class="label label-default">锁定</span>';
+    }
+  }
+</script>
+
+</html>
