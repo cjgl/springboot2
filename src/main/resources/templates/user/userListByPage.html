@@ -136,6 +136,7 @@
         //初始化Table
         oTableInit.Init = function() {
             $('#tb_users').bootstrapTable({
+            	cache: false,
                 url: "queryUsersByPageJson",
                 contentType : "application/x-www-form-urlencoded",
                 search: false, //显示搜索框
@@ -180,7 +181,6 @@
                 },
                 queryParamsType:'',
                 queryParams:function queryParams(params) {
-                	console.log(params);
                     var param = {
                         pageSize: params.pageSize,
                         pageNumber: params.pageNumber-1,

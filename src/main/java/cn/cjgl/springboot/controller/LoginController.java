@@ -28,9 +28,4 @@ public class LoginController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/group")
-	public ModelAndView group(ModelAndView modelAndView, HttpServletRequest request) {
-		modelAndView.setViewName("group");
-		return modelAndView;
-	}
 }
