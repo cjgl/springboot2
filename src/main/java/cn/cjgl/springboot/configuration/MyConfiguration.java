@@ -11,7 +11,7 @@ public class MyConfiguration extends WebMvcConfigurationSupport {
 	@Override
 	protected void addInterceptors(InterceptorRegistry registry) {
 		// TODO Auto-generated method stub
-		String[] excludePathPatterns = {"/index", "/css/**", "/img/**", "/js/**"};
+		String[] excludePathPatterns = {"/index", "/static/**"};
 		registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns(excludePathPatterns);
 		super.addInterceptors(registry);
 	}

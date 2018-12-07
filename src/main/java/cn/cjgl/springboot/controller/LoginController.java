@@ -21,4 +21,16 @@ public class LoginController {
 		modelAndView.addObject("sessionId", request.getSession().getId());
 		return modelAndView;
 	}
+	
+	@RequestMapping("/treegrid")
+	public ModelAndView treegrid(ModelAndView modelAndView, HttpServletRequest request) {
+		modelAndView.setViewName("treegrid");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/group")
+	public ModelAndView group(ModelAndView modelAndView, HttpServletRequest request) {
+		modelAndView.setViewName("group");
+		return modelAndView;
+	}
 }

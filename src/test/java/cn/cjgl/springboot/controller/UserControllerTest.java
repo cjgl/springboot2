@@ -74,5 +74,18 @@ public class UserControllerTest {
 		
 		log.info(result.getResponse().getContentAsString());
 	}
+	
+	@Test
+	public void testQueryUsersByPage() throws Exception {
+		log.info("testQueryUsers");
+		
+		request.setAttribute("rID", "123");
+		session.setAttribute("sID", "sID=test");
+		
+		mockMvc.perform(post("/queryUsersByPage").session(session)
+				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+				.andExpect(status().isOk())
+				.andDo(print());
+	}
 
 }

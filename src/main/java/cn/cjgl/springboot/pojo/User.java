@@ -6,7 +6,7 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("User")
 public class User {
-	private int id;
+	private Integer id;
 	private String name;
 	private String pwd;
 	private Date createtime;
@@ -16,7 +16,7 @@ public class User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(int id, String name, String pwd, Date createtime,
+	public User(Integer id, String name, String pwd, Date createtime,
 			Date updatetime) {
 		super();
 		this.id = id;
@@ -25,10 +25,10 @@ public class User {
 		this.createtime = createtime;
 		this.updatetime = updatetime;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {
