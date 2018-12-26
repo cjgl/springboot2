@@ -28,4 +28,11 @@ public class LoginController {
 		return modelAndView;
 	}
 	
+	@RequestMapping("/main")
+	public ModelAndView main(ModelAndView modelAndView, HttpServletRequest request) {
+		modelAndView.setViewName("main");
+		modelAndView.addObject("sessionId", request.getSession().getId());
+		return modelAndView;
+	}
+	
 }

@@ -1,5 +1,6 @@
 package cn.cjgl.springboot.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -98,15 +100,46 @@ public class UserController {
 		return map;
 	}
 	
+	@RequestMapping("/queryUsersByPageJson2")
+	@ResponseBody
+	public Map<String, Object> queryUsersByPageJson2(User user, Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
+		//PageHelper.startPage(offset, limit, sort + " " + order);
+		PageHelper.offsetPage((page-1)*rows, rows, true);
+		PageHelper.orderBy("name ASC");
+		List<User> userList = this.userService.queryUsers(user);
+		PageInfo<User> pageInfo = new PageInfo<User>(userList);
+		
+		for(User u : userList) {
+			log.info(u.getId()+" : "+u.getName());
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("rows", userList);
+		map.put("total", pageInfo.getTotal());
+
+		return map;
+	}
+	
 	@RequestMapping("/addUser")
 	@ResponseBody
 	public Map<String, Object> addUser(User user, HttpServletRequest request, HttpServletResponse response) {
-		
+		response.setContentType("text/html;charset=UTF-8");
 		this.userService.addUser(user);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("state", "success");
 
 		return map;
+	}
+	
+	@RequestMapping(value= {"/addUser1"}, produces = {"text/html;charset=UTF-8"})
+	@ResponseBody
+	public String addUser1(User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		this.userService.addUser(user);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("state", "success");
+
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(map);
 	}
 	
 	@RequestMapping("/modUser")
