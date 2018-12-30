@@ -2,7 +2,7 @@
 drop table t_sys_project if exists;
 create table t_sys_project(
 projectid int primary key IDENTITY,
-projectname varchar(100),
+projectname varchar(50),
 remark varchar(200),
 createtime varchar(23),
 updatetime varchar(23),
@@ -14,7 +14,7 @@ drop table t_sys_subsystem if exists;
 create table t_sys_subsystem(
 subsystemid int primary key IDENTITY,
 projectid int,
-subsystemname varchar(100),
+subsystemname varchar(50),
 type int,
 remark varchar(200),
 createtime varchar(23),
