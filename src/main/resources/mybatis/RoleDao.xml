@@ -36,8 +36,17 @@
             LEFT JOIN t_sys_project t1 ON t.projectid = t1.projectid
             LEFT JOIN t_sys_subsystem t2 ON t.subsystemid = t2.subsystemid
         <where>
+            <if test="projectid!=null">
+                t.projectid = #{projectid}
+            </if>
+            <if test="subsystemid!=null">
+                AND t.subsystemid = #{subsystemid}
+            </if>
+            <if test="rolename!=null and rolename!=''">
+                AND t.rolename LIKE CONCAT('%', #{rolename}, '%')
+            </if>
             <if test="delflag!=null and delflag!=''">
-                t.delflag = #{delflag}
+                AND t.delflag = #{delflag}
             </if>
         </where>
     </select>

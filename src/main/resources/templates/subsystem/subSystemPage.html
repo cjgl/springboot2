@@ -7,12 +7,8 @@
     <body>
         <div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'north'" style="height:50px;padding:10px">
-                <input id="q_subsystemname" name="q_subsystemname" class="easyui-textbox" label="项目名称:" style="width:300px;">
-                <input id="q_projectid" name="q_projectid" label="项目名称:" class="easyui-combobox" style="width:300px;"
-                    data-options="editable:false,
-                                    panelHeight:'auto',
-                                    editable:false
-                    ">
+                <input id="q_subsystemname" name="q_subsystemname" class="easyui-textbox" label="项目名称:" style="width:260px;">
+                <input id="q_projectid" name="q_projectid" label="项目名称:" class="easyui-combobox" style="width:260px;"data-options="editable:false,panelHeight:'auto'">
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="query();">查询</a>
             </div>
             <div data-options="region:'center'">
@@ -67,6 +63,7 @@
     </body>
     
 <script type="text/javascript">
+var q_projectid_num = 0;
 $(function(){
 	$('#q_projectid').combobox({
 	    valueField: 'projectid',   
@@ -82,7 +79,10 @@ $(function(){
 	        }); 
 	    },
 	    onLoadSuccess:function(){
-	        $('#q_projectid').combobox('setValue','请选择');
+	    	if(q_projectid_num == 0){
+	    		q_projectid_num++;
+	    		$('#q_projectid').combobox('select', -1);
+	    	} 
 	    },
 		onShowPanel : function(){
 			$('#q_projectid').combobox('reload');
@@ -91,14 +91,10 @@ $(function(){
 });
 
 function query(){
-	var params = {subsystemname : $('#q_subsystemname').val()};
-	var projectid = $('#q_projectid').combobox('getValue');
-	if(projectid == "-1"){
-		params.projectid = '';
-	} else {
-		params.projectid = projectid;
-	}
-    $('#dg').datagrid('load', params);
+    $('#dg').datagrid('load', {
+    	subsystemname : $('#q_subsystemname').val(),
+    	projectid : $('#q_projectid').combobox('getValue')==-1 ? '' : $('#q_projectid').combobox('getValue')
+    });
 }
 
 var url;
@@ -152,7 +148,10 @@ function save(){
             var result = eval('('+result+')');
             if (result.nResult=="0"){
                 $('#dlg').dialog('close');        // close the dialog
-                $('#dg').datagrid('reload');    // reload the user data
+                $('#dg').datagrid('reload', {
+                    subsystemname : $('#q_subsystemname').val(),
+                    projectid : $('#q_projectid').combobox('getValue')==-1 ? '' : $('#q_projectid').combobox('getValue')
+                });    // reload the user data
             } else {
                 $.messager.show({
                     title: '提示',
@@ -170,7 +169,10 @@ function del(){
             if (r){
                 $.post('delSubSystem',{subsystemid:row.subsystemid},function(result){
                     if (result.nResult=="0"){
-                        $('#dg').datagrid('reload');    // reload the user data
+                        $('#dg').datagrid('reload', {
+                            subsystemname : $('#q_subsystemname').val(),
+                            projectid : $('#q_projectid').combobox('getValue')==-1 ? '' : $('#q_projectid').combobox('getValue')
+                        });    // reload the user data
                     } else {
                         $.messager.show({    // show error message
                             title: '提示',

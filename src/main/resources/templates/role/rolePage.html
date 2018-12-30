@@ -6,28 +6,38 @@
     
     <body>
     
-        <table id="dg" class="easyui-datagrid" style="height:100%;width:100%;"
-                url="queryRoleJson"
-                toolbar="#toolbar" fit="true"
-                rownumbers="true" fitColumns="true" singleSelect="true"
-                striped="true" loadMsg="数据加载中，请等待..."
-                pageSize="20" pagination="true"
-                pageList="[1,2,10,20]">
-            <thead>
-                <tr>
-                    <th field="rolename" width="40">角色名称</th>
-                    <th field="projectname" width="50">项目名称</th> 
-                    <th field="subsystemname" width="50">子系统名称</th>
-                    <th field="remark" width="40">备注</th>
-                    <th field="createtime" width="30">创建时间</th>
-                    <th field="updatetime" width="30">修改时间</th>
-                </tr>
-            </thead>
-        </table>
-        <div id="toolbar">
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add();">新增</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="mod();">修改</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="del();">删除</a>
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'north'" style="height:50px;padding:10px">
+                <input id="q_rolename" name="q_rolename" class="easyui-textbox" label="角色名称:" style="width:260px;">
+                <input id="q_projectid" name="q_projectid" label="项目名称:" class="easyui-combobox" style="width:260px;"data-options="editable:false,panelHeight:'auto'">
+                <input id="q_subsystemid" name="q_subsystemid" label="子系统名称:" class="easyui-combobox" style="width:260px;"data-options="editable:false,panelHeight:'auto'">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="query();">查询</a>
+            </div>
+            <div data-options="region:'center'">
+		        <table id="dg" class="easyui-datagrid" style="height:100%;width:100%;"
+		                url="queryRoleJson"
+		                toolbar="#toolbar" fit="true"
+		                rownumbers="true" fitColumns="true" singleSelect="true"
+		                striped="true" loadMsg="数据加载中，请等待..."
+		                pageSize="20" pagination="true"
+		                pageList="[1,2,10,20]">
+		            <thead>
+		                <tr>
+		                    <th field="rolename" width="40">角色名称</th>
+		                    <th field="projectname" width="50">项目名称</th> 
+		                    <th field="subsystemname" width="50">子系统名称</th>
+		                    <th field="remark" width="40">备注</th>
+		                    <th field="createtime" width="30">创建时间</th>
+		                    <th field="updatetime" width="30">修改时间</th>
+		                </tr>
+		            </thead>
+		        </table>
+		        <div id="toolbar">
+		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add();">新增</a>
+		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="mod();">修改</a>
+		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="del();">删除</a>
+		        </div>
+	        </div>
         </div>
         
         <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
@@ -55,6 +65,66 @@
     </body>
     
 <script type="text/javascript">
+var q_projectid_num = 0;
+var q_subsystemid_num = 0;
+$(function(){
+    $('#q_projectid').combobox({
+        valueField: 'projectid',   
+        textField: 'projectname',
+        loader:function(param,success,error){  
+            $.ajax({  
+                url: '../project/queryProjectCombobox',  
+                dataType: 'json',  
+                success: function(data){
+                    data.unshift({projectid:-1,projectname:'请选择'});
+                    success(data); //loader的success
+                } 
+            }); 
+        },
+        onLoadSuccess:function(){
+        	if(q_projectid_num == 0){
+        		q_projectid_num++;
+        		$('#q_projectid').combobox('select', -1);
+        	} 
+        },
+        onShowPanel : function(){
+            $('#q_projectid').combobox('reload');
+        }
+    });
+    
+    $('#q_subsystemid').combobox({
+        valueField: 'subsystemid',   
+        textField: 'subsystemname',
+        loader:function(param,success,error){  
+            $.ajax({  
+                url: '../subsystem/querySubSystemCombobox',  
+                dataType: 'json',  
+                success: function(data){
+                    data.unshift({subsystemid:-1,subsystemname:'请选择'});
+                    success(data); //loader的success
+                } 
+            }); 
+        },
+        onLoadSuccess:function(){
+        	if(q_subsystemid_num == 0){
+        		q_subsystemid_num++;
+        		$('#q_subsystemid').combobox('select', -1);
+        	}
+        },
+        onShowPanel : function(){
+            $('#q_subsystemid').combobox('reload');
+        }
+    });
+});
+
+function query(){
+    $('#dg').datagrid('load', {
+    	rolename : $('#q_rolename').val(),
+    	projectid : $('#q_projectid').combobox('getValue')==-1 ? '' : $('#q_projectid').combobox('getValue'),
+    	subsystemid : $('#q_subsystemid').combobox('getValue')==-1 ? '' : $('#q_subsystemid').combobox('getValue')
+    });
+}
+
 var url;
 function add(){
     $('#dlg').dialog('open').dialog('center').dialog('setTitle','新增');
@@ -118,7 +188,11 @@ function save(){
             var result = eval('('+result+')');
             if (result.nResult=="0"){
                 $('#dlg').dialog('close');        // close the dialog
-                $('#dg').datagrid('reload');    // reload the user data
+                $('#dg').datagrid('reload', {
+                    rolename : $('#q_rolename').val(),
+                    projectid : $('#q_projectid').combobox('getValue')==-1 ? '' : $('#q_projectid').combobox('getValue'),
+                    subsystemid : $('#q_subsystemid').combobox('getValue')==-1 ? '' : $('#q_subsystemid').combobox('getValue')
+                });    // reload the user data
             } else {
                 $.messager.show({
                     title: '提示',
@@ -136,7 +210,11 @@ function del(){
             if (r){
                 $.post('delRole',{roleid:row.roleid},function(result){
                     if (result.nResult=="0"){
-                        $('#dg').datagrid('reload');    // reload the user data
+                        $('#dg').datagrid('reload', {
+                            rolename : $('#q_rolename').val(),
+                            projectid : $('#q_projectid').combobox('getValue')==-1 ? '' : $('#q_projectid').combobox('getValue'),
+                            subsystemid : $('#q_subsystemid').combobox('getValue')==-1 ? '' : $('#q_subsystemid').combobox('getValue')
+                        });    // reload the user data
                     } else {
                         $.messager.show({    // show error message
                             title: '提示',
