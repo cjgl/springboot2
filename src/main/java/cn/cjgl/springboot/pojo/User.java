@@ -11,20 +11,6 @@ public class User {
 	private String pwd;
 	private Date createtime;
 	private Date updatetime;
-	private Department department;
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public User(Integer id, String name, String pwd, Date createtime,
-			Date updatetime) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.pwd = pwd;
-		this.createtime = createtime;
-		this.updatetime = updatetime;
-	}
 	public Integer getId() {
 		return id;
 	}
@@ -54,11 +40,5 @@ public class User {
 	}
 	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
-	}
-	public Department getDepartment() {
-		return department;
-	}
-	public void setDepartment(Department department) {
-		this.department = department;
 	}
 }
