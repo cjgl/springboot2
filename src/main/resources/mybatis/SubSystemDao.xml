@@ -35,7 +35,7 @@
         FROM t_sys_subsystem t
             LEFT JOIN t_sys_project t1 ON t.projectid = t1.projectid
         <where>
-            <if test="projectid!=null and projectid!=''">
+            <if test="projectid!=null">
                 t.projectid = #{projectid}
             </if>
             <if test="subsystemname!=null and subsystemname!=''">

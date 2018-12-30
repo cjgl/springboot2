@@ -11,22 +11,7 @@
                 <input id="q_projectid" name="q_projectid" label="项目名称:" class="easyui-combobox" style="width:300px;"
                     data-options="editable:false,
                                     panelHeight:'auto',
-                                    editable:false,
-                                    valueField: 'projectid',   
-                                    textField: 'projectname',
-                                    loader:function(param,success,error){  
-                                        $.ajax({  
-                                            url: '../project/queryProjectCombobox',  
-                                            dataType: 'json',  
-                                            success: function(data){
-                                                data.unshift({projectid:'-1',projectname:'请选择'});
-                                                success(data); //loader的success
-                                            } 
-                                        }); 
-                                    },
-                                    onLoadSuccess:function(){
-                                        $('#q_projectid').combobox('setValue','请选择');
-                                    }
+                                    editable:false
                     ">
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="query();">查询</a>
             </div>
@@ -83,7 +68,26 @@
     
 <script type="text/javascript">
 $(function(){
-
+	$('#q_projectid').combobox({
+	    valueField: 'projectid',   
+	    textField: 'projectname',
+	    loader:function(param,success,error){  
+	        $.ajax({  
+	            url: '../project/queryProjectCombobox',  
+	            dataType: 'json',  
+	            success: function(data){
+	                data.unshift({projectid:-1,projectname:'请选择'});
+	                success(data); //loader的success
+	            } 
+	        }); 
+	    },
+	    onLoadSuccess:function(){
+	        //$('#q_projectid').combobox('setValue','请选择');
+	    },
+		onShowPanel : function(){
+			$('#q_projectid').combobox('reload');
+		}
+	});
 });
 
 function query(){
