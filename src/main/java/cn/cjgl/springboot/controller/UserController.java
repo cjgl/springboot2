@@ -36,9 +36,6 @@ public class UserController {
 		modelAndView.addObject("sessionId", request.getSession().getId());
 		User user = new User();
 		List<User> userList = this.userService.queryUsers(user);
-		for(User u : userList) {
-			log.info(u.getId()+" : "+u.getName());
-		}
 		modelAndView.addObject("userList", userList);
 		return modelAndView;
 	}
@@ -48,30 +45,7 @@ public class UserController {
 	public List<User> queryUsersJson(HttpServletRequest request, HttpServletResponse response) {
 		User user = new User();
 		List<User> userList = this.userService.queryUsers(user);
-		for(User u : userList) {
-			log.info(u.getId()+" : "+u.getName());
-		}
 		return userList;
-	}
-	
-	@RequestMapping("/testTransaction")
-	public ModelAndView testTransaction(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response) {
-		modelAndView.setViewName("user/userList");
-		modelAndView.addObject("sessionId", request.getSession().getId());
-		
-		try {
-			this.userService.testTransaction();
-		} catch(Exception e) {
-			log.error(e.getMessage());
-		}
-		
-		User user = new User();
-		List<User> userList = this.userService.queryUsers(user);
-		for(User u : userList) {
-			log.info(u.getId()+" : "+u.getName());
-		}
-		modelAndView.addObject("userList", userList);
-		return modelAndView;
 	}
 	
 	@RequestMapping("/queryUsersByPage")
@@ -89,9 +63,6 @@ public class UserController {
 		List<User> userList = this.userService.queryUsers(user);
 		PageInfo<User> page = new PageInfo<User>(userList);
 		
-		for(User u : userList) {
-			log.info(u.getId()+" : "+u.getName());
-		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("data", userList);
@@ -108,10 +79,6 @@ public class UserController {
 		PageHelper.orderBy("name ASC");
 		List<User> userList = this.userService.queryUsers(user);
 		PageInfo<User> pageInfo = new PageInfo<User>(userList);
-		
-		for(User u : userList) {
-			log.info(u.getId()+" : "+u.getName());
-		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("rows", userList);

@@ -48,7 +48,7 @@ delflag varchar(1)
 /*用户表*/
 drop table t_sys_user if exists;
 create table t_sys_user(
-id int primary key IDENTITY,
+userid int primary key IDENTITY,
 projectid int,
 subsystemid int,
 loginname varchar(50),
@@ -68,6 +68,6 @@ values(0, 0, '后台管理子系统', 0, '后台管理子系统', '2018-12-27 13
 insert into t_sys_role(roleid, projectid, subsystemid, rolename, remark, createtime, updatetime, delflag)
 values(0, 0, 0, '后台管理角色', '后台管理角色', '2018-12-27 13:15:00', '2018-12-27 13:15:00', 0);
 
-insert into t_sys_user(id, projectid, subsystemid, loginname, username, pwd, createtime, updatetime, delflag)
+insert into t_sys_user(userid, projectid, subsystemid, loginname, username, pwd, createtime, updatetime, delflag)
 values(0, 0, 0, 'admin', '超级管理员', '123456', '2018-12-27 13:15:00', '2018-12-27 13:15:00', 0)
 

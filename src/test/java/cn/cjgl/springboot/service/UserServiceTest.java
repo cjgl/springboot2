@@ -23,9 +23,8 @@ public class UserServiceTest {
 		log.info("testAddUser");
 		
 		User user = new User();
-		user.setName("Jack");
+		user.setUsername("Jack");
 		this.userService.addUser(user);
-		this.userService.showUserList();
 	}
 
 	@Test
@@ -33,10 +32,9 @@ public class UserServiceTest {
 		log.info("testModUser");
 		
 		User user = new User();
-		user.setId(0);
-		user.setName("Jack");
+		user.setUserid(0);
+		user.setUsername("Jack");
 		this.userService.modUser(user);
-		this.userService.showUserList();
 	}
 
 	@Test
@@ -44,16 +42,13 @@ public class UserServiceTest {
 		log.info("testDelUser");
 		
 		User user = new User();
-		user.setId(0);
+		user.setUserid(0);
 		this.userService.delUser(user);
-		this.userService.showUserList();
 	}
 
 	@Test
 	public void testQueryUsers() {
 		log.info("testQueryUsers");
-		
-		this.userService.showUserList();
 	}
 
 }
