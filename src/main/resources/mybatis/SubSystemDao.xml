@@ -21,7 +21,7 @@
     </update>
     
     <delete id="delSubSystem" parameterType="SubSystem">
-        DELETE from t_sys_subsystem
+        DELETE FROM t_sys_subsystem
         WHERE subsystemid = #{subsystemid}
     </delete>
     

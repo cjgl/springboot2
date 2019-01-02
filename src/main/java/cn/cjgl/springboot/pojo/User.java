@@ -13,6 +13,10 @@ public class User {
 	private String createtime;
 	private String updatetime;
 	private String delflag;
+	
+	private String projectname;
+	private String subsystemname;
+	
 	public Integer getUserid() {
 		return userid;
 	}
@@ -66,5 +70,17 @@ public class User {
 	}
 	public void setDelflag(String delflag) {
 		this.delflag = delflag;
+	}
+	public String getProjectname() {
+		return projectname;
+	}
+	public void setProjectname(String projectname) {
+		this.projectname = projectname;
+	}
+	public String getSubsystemname() {
+		return subsystemname;
+	}
+	public void setSubsystemname(String subsystemname) {
+		this.subsystemname = subsystemname;
 	}
 }

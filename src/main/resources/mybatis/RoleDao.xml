@@ -21,7 +21,7 @@
     </update>
     
     <delete id="delRole" parameterType="Role">
-        DELETE from t_sys_role
+        DELETE FROM t_sys_role
         WHERE roleid = #{roleid}
     </delete>
     

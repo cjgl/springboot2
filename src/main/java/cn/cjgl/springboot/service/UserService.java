@@ -17,20 +17,36 @@ public class UserService {
 	@Resource(name = "userDao")
 	private UserDao userDao;
 	
-	public void addUser(User user){
-		this.userDao.addUser(user);
+	public int addUser(User user) {
+		int nResult = 0;
+		if((nResult = this.userDao.checkUser(user)) == 0) {
+			this.userDao.addUser(user);
+		} 
+		return nResult;
 	}
 	
-	public void modUser(User user){
-		this.userDao.modUser(user);
+	public int modUser(User user) {
+		int nResult = 0;
+		if((nResult = this.userDao.checkUser(user)) == 0) {
+			this.userDao.modUser(user);
+		}
+		return nResult;
 	}
 	
-	public void delUser(User user){
+	public void delUser(User user) {
 		this.userDao.delUser(user);
 	}
 	
-	public List<User> queryUsers(User user){
-		return this.userDao.queryUsers(user);
+	public User queryUser(User user){
+		return this.queryUser(user);
+	}
+	
+	public List<User> queryUserList(User user){
+		return this.userDao.queryUserList(user);
+	}
+	
+	public Integer checkUser(User user) {
+		return this.userDao.checkUser(user);
 	}
 	
 }

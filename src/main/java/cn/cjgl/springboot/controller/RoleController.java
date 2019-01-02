@@ -101,7 +101,6 @@ public class RoleController {
 			msg = "内置角色无法修改";
 		}
 		
-		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("nResult", nResult+"");
 		map.put("msg", msg);

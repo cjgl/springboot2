@@ -16,68 +16,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import cn.cjgl.springboot.pojo.User;
 import cn.cjgl.springboot.service.UserService;
+import cn.cjgl.springboot.util.DateTimeUtil;
 
 
 @Controller
+@RequestMapping("user")
 public class UserController {
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+	
 	@Autowired
     private UserService userService;
 	
-	@RequestMapping("/queryUsers")
-	public ModelAndView queryUsers(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response) {
-		modelAndView.setViewName("user/userList");
-		modelAndView.addObject("sessionId", request.getSession().getId());
-		User user = new User();
-		List<User> userList = this.userService.queryUsers(user);
-		modelAndView.addObject("userList", userList);
+	@RequestMapping("/userPage")
+	public ModelAndView userPage(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response) {
+		log.debug("userPage");
+		
+		modelAndView.setViewName("user/userPage");
 		return modelAndView;
 	}
 	
-	@RequestMapping("/queryUsersJson")
+	@RequestMapping("/queryUserJson")
 	@ResponseBody
-	public List<User> queryUsersJson(HttpServletRequest request, HttpServletResponse response) {
-		User user = new User();
-		List<User> userList = this.userService.queryUsers(user);
-		return userList;
-	}
-	
-	@RequestMapping("/queryUsersByPage")
-	public ModelAndView queryUsersByPage(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response) {
-		modelAndView.setViewName("user/userListByPage");
-		return modelAndView;
-	}
-	
-	@RequestMapping("/queryUsersByPageJson")
-	@ResponseBody
-	public Map<String, Object> queryUsersByPageJson(User user, Integer pageSize, Integer pageNumber, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
-		//PageHelper.startPage(offset, limit, sort + " " + order);
-		PageHelper.offsetPage(pageNumber*pageSize, pageSize, true);
-		PageHelper.orderBy(sortName + " " + sortOrder);
-		List<User> userList = this.userService.queryUsers(user);
-		PageInfo<User> page = new PageInfo<User>(userList);
-		
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("data", userList);
-		map.put("total", page.getTotal());
-
-		return map;
-	}
-	
-	@RequestMapping("/queryUsersByPageJson2")
-	@ResponseBody
-	public Map<String, Object> queryUsersByPageJson2(User user, Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> queryUserJson(User user, Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
 		//PageHelper.startPage(offset, limit, sort + " " + order);
 		PageHelper.offsetPage((page-1)*rows, rows, true);
-		PageHelper.orderBy("name ASC");
-		List<User> userList = this.userService.queryUsers(user);
+		PageHelper.orderBy("t.createtime DESC");
+		
+		user.setDelflag("0");
+		List<User> userList = this.userService.queryUserList(user);
 		PageInfo<User> pageInfo = new PageInfo<User>(userList);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -87,47 +60,75 @@ public class UserController {
 		return map;
 	}
 	
-	@RequestMapping("/addUser")
+	@RequestMapping(value= {"/addUser"}, produces = {"text/html;charset=UTF-8"})
 	@ResponseBody
-	public Map<String, Object> addUser(User user, HttpServletRequest request, HttpServletResponse response) {
-		response.setContentType("text/html;charset=UTF-8");
-		this.userService.addUser(user);
+	public String addUser(User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String now = DateTimeUtil.getDateTime19();
+		user.setCreatetime(now);
+		user.setUpdatetime(now);
+		user.setDelflag("0");
+		
+		int nResult = this.userService.addUser(user);
+		String msg = "操作成功";
+		if(nResult != 0) {
+			msg = "登录名重复";
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("state", "success");
-
-		return map;
-	}
-	
-	@RequestMapping(value= {"/addUser1"}, produces = {"text/html;charset=UTF-8"})
-	@ResponseBody
-	public String addUser1(User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		this.userService.addUser(user);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("state", "success");
+		map.put("nResult", nResult+"");
+		map.put("msg", msg);
 
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(map);
 	}
 	
-	@RequestMapping("/modUser")
+	@RequestMapping(value= {"/modUser"}, produces = {"text/html;charset=UTF-8"})
 	@ResponseBody
-	public Map<String, Object> modUser(User user, HttpServletRequest request, HttpServletResponse response) {
+	public String modUser(User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String now = DateTimeUtil.getDateTime19();
+		user.setUpdatetime(now);
+		user.setDelflag("0");
 		
-		this.userService.modUser(user);
+		int nResult = 0;
+		String msg = "";
+		
+		if(user.getUserid() != 0) {
+			nResult = this.userService.modUser(user);
+			
+			if(nResult != 0) {
+				msg = "登录名重复";
+			} else {
+				msg = "操作成功";
+			}
+		} else {
+			nResult = 1;
+			msg = "内置用户无法修改";
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("state", "success");
+		map.put("nResult", nResult+"");
+		map.put("msg", msg);
 
-		return map;
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(map);
 	}
 	
-	@RequestMapping("/delUser")
+	@RequestMapping(value= {"/delUser"}, produces = {"text/html;charset=UTF-8"})
 	@ResponseBody
-	public Map<String, Object> delUser(User user, HttpServletRequest request, HttpServletResponse response) {
-		
-		this.userService.delUser(user);
+	public String delUser(User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("state", "success");
+		
+		if(user.getUserid() != 0) {
+			this.userService.delUser(user);
 
-		return map;
+			map.put("nResult", "0");
+			map.put("msg", "操作成功");
+		} else {
+			map.put("nResult", "1");
+			map.put("msg", "内置用户无法删除");
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(map);
 	}
 }

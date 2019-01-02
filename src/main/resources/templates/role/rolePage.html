@@ -33,9 +33,9 @@
 		            </thead>
 		        </table>
 		        <div id="toolbar">
-		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add();">新增</a>
-		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="mod();">修改</a>
-		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="del();">删除</a>
+		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-roleadd" plain="true" onclick="add();">新增</a>
+		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-roleedit" plain="true" onclick="mod();">修改</a>
+		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-roledelete" plain="true" onclick="del();">删除</a>
 		        </div>
 	        </div>
         </div>
@@ -71,15 +71,16 @@ $(function(){
     $('#q_projectid').combobox({
         valueField: 'projectid',   
         textField: 'projectname',
-        loader:function(param,success,error){  
-            $.ajax({  
-                url: '../project/queryProjectCombobox',  
-                dataType: 'json',  
+        loader:function(param,success,error){
+            $.ajax({
+                url: '../project/queryProjectCombobox',
+                dataType: 'json',
+                cache : false,
                 success: function(data){
                     data.unshift({projectid:-1,projectname:'请选择'});
                     success(data); //loader的success
-                } 
-            }); 
+                }
+            });
         },
         onLoadSuccess:function(){
         	if(q_projectid_num == 0){
@@ -95,15 +96,16 @@ $(function(){
     $('#q_subsystemid').combobox({
         valueField: 'subsystemid',   
         textField: 'subsystemname',
-        loader:function(param,success,error){  
-            $.ajax({  
-                url: '../subsystem/querySubSystemCombobox',  
-                dataType: 'json',  
+        loader:function(param,success,error){
+            $.ajax({
+                url: '../subsystem/querySubSystemCombobox',
+                dataType: 'json',
+                cache : false,
                 success: function(data){
                     data.unshift({subsystemid:-1,subsystemname:'请选择'});
                     success(data); //loader的success
-                } 
-            }); 
+                }
+            });
         },
         onLoadSuccess:function(){
         	if(q_subsystemid_num == 0){
@@ -171,6 +173,18 @@ function mod(){
                 var data= $(this).combobox("getData");
                 if (data.length > 0) {
                     $('#projectid').combobox('select', row.projectid);
+                }
+            }
+        });
+        
+        $("#subsystemid").combobox({
+            valueField:'subsystemid',
+            textField:'subsystemname',
+            url:'../subsystem/querySubSystemCombobox',
+            onLoadSuccess:function(){ //默认选中第一条数据
+                var data= $(this).combobox("getData");
+                if (data.length > 0) {
+                    $('#subsystemid').combobox('select', data[0].subsystemid);
                 }
             }
         });

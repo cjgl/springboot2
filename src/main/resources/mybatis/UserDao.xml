@@ -4,22 +4,70 @@
 
 <mapper namespace="cn.cjgl.springboot.dao.UserDao" >
 	<insert id="addUser" parameterType="User">
-		insert into t_sys_user(name, pwd, depid) values(#{name}, #{pwd}, #{department.id})
+		INSERT INTO t_sys_user(projectid, subsystemid, loginname, username,
+            pwd, createtime, updatetime, delflag)
+		VALUES(#{projectid}, #{subsystemid}, #{loginname}, #{username},
+            #{pwd}, #{createtime}, #{updatetime}, #{delflag})
 	</insert>
 
 	<update id="modUser" parameterType="User">
-		update t_sys_user
-		set name = #{name}, pwd = #{pwd}, depid = #{department.id}
-		where id = #{id}
+		UPDATE t_sys_user
+		SET projectid = #{projectid},
+            subsystemid = #{subsystemid},
+            loginname = #{loginname},
+            username = #{username},
+            pwd = #{pwd},
+            updatetime = #{updatetime}
+		WHERE userid = #{userid}
 	</update>
 	
 	<delete id="delUser" parameterType="User">
-		delete from t_sys_user where id = #{id}
+		DELETE FROM t_sys_user
+		WHERE userid = #{userid}
 	</delete>
 	
-	<select id="queryUsers" parameterType="User" resultType="User">
-		select * from t_sys_user
+	<select id="queryUser" parameterType="User" resultType="User">
+		SELECT * FROM t_sys_user
+		WHERE userid = #{userid}
 	</select>
 	
+	<select id="queryUserList" parameterType="User" resultType="User">
+        SELECT t.*, t1.projectname, t2.subsystemname
+        FROM t_sys_user t
+        LEFT JOIN t_sys_project t1 ON t.projectid = t1.projectid
+            LEFT JOIN t_sys_subsystem t2 ON t.subsystemid = t2.subsystemid
+        <where>
+            <if test="projectid!=null">
+                t.projectid = #{projectid}
+            </if>
+            <if test="subsystemid!=null">
+                AND t.subsystemid = #{subsystemid}
+            </if>
+            <if test="loginname!=null and loginname!=''">
+                AND t.loginname LIKE CONCAT('%', #{loginname}, '%')
+            </if>
+            <if test="username!=null and username!=''">
+                AND t.username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="delflag!=null and delflag!=''">
+                AND t.delflag = #{delflag}
+            </if>
+        </where>
+    </select>
+	
+	<select id="checkUser" parameterType="User" resultType="int">
+        SELECT COUNT(t.userid) FROM t_sys_user t
+        <where>
+            <if test='userid!=null'>
+                t.userid != #{userid}
+            </if>
+            <if test='loginname!=null and loginname!=""'>
+                AND t.loginname = #{loginname}
+            </if>
+            <if test='delflag!=null and delflag!=""'>
+                AND t.delflag = #{delflag}
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -101,7 +101,6 @@ public class SubSystemController {
 			msg = "内置子系统无法修改";
 		}
 		
-		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("nResult", nResult+"");
 		map.put("msg", msg);

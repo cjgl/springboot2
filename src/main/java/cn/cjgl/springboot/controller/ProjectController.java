@@ -122,7 +122,6 @@ public class ProjectController {
 			map.put("msg", "内置项目不可删除");
 		}
 		
-
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(map);
 	}

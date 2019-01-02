@@ -19,7 +19,7 @@
     </update>
     
     <delete id="delProject" parameterType="Project">
-        DELETE from t_sys_project
+        DELETE FROM t_sys_project
         WHERE projectid = #{projectid}
     </delete>
     

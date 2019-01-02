@@ -25,7 +25,7 @@ public class UserDaoTest {
     	log.info("testQueryUsers");
     	
     	User user = new User();
-    	List<User> userList = this.userDao.queryUsers(user);
+    	List<User> userList = this.userDao.queryUserList(user);
     	for(User u : userList) {
     		log.info(u.getUserid() + " : " + u.getUsername());
     	}
