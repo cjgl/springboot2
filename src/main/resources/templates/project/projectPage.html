@@ -14,16 +14,17 @@
 				 <table id="dg" class="easyui-datagrid" style="height:100%;width:100%;"
 		                url="queryProjectJson"
 		                toolbar="#toolbar" fit="true"
-		                rownumbers="true" fitColumns="true" singleSelect="true"
+		                frozenColumns=[[]]
+		                rownumbers="true" fitColumns="false" singleSelect="true"
 		                striped="true" loadMsg="数据加载中，请等待..." emptyMsg="暂无数据"
 		                pageSize="20" pagination="true"
 		                pageList="[10,20]">
 		            <thead>
 		                <tr>
-		                    <th field="projectname" width="50">项目名称</th>
-		                    <th field="remark" width="50">备注</th>
-		                    <th field="createtime" width="30">创建时间</th>
-		                    <th field="updatetime" width="30">修改时间</th>
+		                    <th field="projectname" width="200">项目名称</th>
+		                    <th field="remark" width="300">备注</th>
+		                    <th field="createtime" width="130">创建时间</th>
+		                    <th field="updatetime" width="130">修改时间</th>
 		                </tr>
 		            </thead>
 		        </table>
