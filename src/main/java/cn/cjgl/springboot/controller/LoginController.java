@@ -22,12 +22,6 @@ public class LoginController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/treegrid")
-	public ModelAndView treegrid(ModelAndView modelAndView, HttpServletRequest request) {
-		modelAndView.setViewName("treegrid");
-		return modelAndView;
-	}
-	
 	@RequestMapping("/main")
 	public ModelAndView main(ModelAndView modelAndView, HttpServletRequest request) {
 		modelAndView.setViewName("main");

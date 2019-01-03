@@ -189,6 +189,11 @@ function mod(){
                 }
             }
         });
+    } else {
+    	$.messager.alert({
+            title: '提示',
+            msg: "请选择一行"
+        });
     }
 }
 
@@ -209,7 +214,7 @@ function save(){
                     subsystemid : $('#q_subsystemid').combobox('getValue')==-1 ? '' : $('#q_subsystemid').combobox('getValue')
                 });    // reload the user data
             } else {
-                $.messager.show({
+                $.messager.alert({
                     title: '提示',
                     msg: result.msg
                 });
@@ -231,7 +236,7 @@ function del(){
                             subsystemid : $('#q_subsystemid').combobox('getValue')==-1 ? '' : $('#q_subsystemid').combobox('getValue')
                         });    // reload the user data
                     } else {
-                        $.messager.show({    // show error message
+                        $.messager.alert({    // show error message
                             title: '提示',
                             msg: result.msg
                         });
@@ -240,7 +245,7 @@ function del(){
             }
         });
     } else {
-        $.messager.show({
+        $.messager.alert({
             title: '提示',
             msg: "请选择一行"
         });

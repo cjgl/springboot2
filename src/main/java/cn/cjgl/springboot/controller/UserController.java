@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,7 +23,6 @@ import com.github.pagehelper.PageInfo;
 import cn.cjgl.springboot.pojo.User;
 import cn.cjgl.springboot.service.UserService;
 import cn.cjgl.springboot.util.DateTimeUtil;
-
 
 @Controller
 @RequestMapping("user")

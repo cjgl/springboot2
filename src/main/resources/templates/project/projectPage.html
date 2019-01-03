@@ -75,6 +75,11 @@ function mod(){
         $('#dlg').dialog('open').dialog('center').dialog('setTitle','修改');
         $('#fm').form('load',row);
         url = 'modProject?projectid='+row.projectid;
+    } else {
+    	$.messager.alert({
+            title: '提示',
+            msg: "请选择一行"
+        });
     }
 }
 
@@ -93,7 +98,7 @@ function save(){
                     projectname : $('#q_projectname').val()
                 });    // reload the user data
             } else {
-                $.messager.show({
+                $.messager.alert({
                     title: '提示',
                     msg: result.msg
                 });
@@ -111,7 +116,7 @@ function del(){
                     if (result.nResult=="0"){
                         $('#dg').datagrid('reload');    // reload the user data
                     } else {
-                        $.messager.show({    // show error message
+                        $.messager.alert({    // show error message
                             title: '提示',
                             msg: result.msg
                         });
@@ -120,7 +125,7 @@ function del(){
             }
         });
     } else {
-        $.messager.show({
+        $.messager.alert({
             title: '提示',
             msg: "请选择一行"
         });

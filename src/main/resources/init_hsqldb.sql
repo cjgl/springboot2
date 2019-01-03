@@ -22,16 +22,6 @@ updatetime varchar(23),
 delflag varchar(1)
 );
 
-/*菜单表*/
-drop table t_sys_menu if exists;
-create table t_sys_menu(
-menuid int primary key IDENTITY,
-subsystemid int,
-pmenuid int,
-menuname varchar(50),
-menuurl varchar(500)
-);
-
 /*角色表*/
 drop table t_sys_role if exists;
 create table t_sys_role(
@@ -59,6 +49,24 @@ updatetime varchar(23),
 delflag varchar(1)
 );
 
+/*用户角色关联表*/
+drop table t_sys_userrole if exists;
+create table t_sys_userrole(
+userroleid int primary key IDENTITY,
+userid int,
+roleid int
+);
+
+/*菜单表*/
+drop table t_sys_menu if exists;
+create table t_sys_menu(
+menuid int primary key IDENTITY,
+subsystemid int,
+pmenuid int,
+menuname varchar(50),
+menuurl varchar(500)
+);
+
 insert into t_sys_project(projectid, projectname, remark, createtime, updatetime, delflag)
 values(0, '后台管理项目', '后台管理项目', '2018-12-27 13:15:00', '2018-12-27 13:15:00', 0);
 
@@ -69,5 +77,8 @@ insert into t_sys_role(roleid, projectid, subsystemid, rolename, remark, createt
 values(0, 0, 0, '后台管理角色', '后台管理角色', '2018-12-27 13:15:00', '2018-12-27 13:15:00', 0);
 
 insert into t_sys_user(userid, projectid, subsystemid, loginname, username, pwd, createtime, updatetime, delflag)
-values(0, 0, 0, 'admin', '超级管理员', '123456', '2018-12-27 13:15:00', '2018-12-27 13:15:00', 0)
+values(0, 0, 0, 'admin', '超级管理员', '123456', '2018-12-27 13:15:00', '2018-12-27 13:15:00', 0);
+
+insert into t_sys_userrole(userid, roleid)
+values(0, 0);
 

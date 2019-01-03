@@ -42,7 +42,7 @@
                     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-useredit" plain="true" onclick="mod();">修改</a>
                     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-userdelete" plain="true" onclick="del();">删除</a>
                     <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
-                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-rolelink" plain="true" onclick=";">绑定角色</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-rolelink" plain="true" onclick="bindRole();">绑定角色</a>
                 </div>
             </div>
         </div>
@@ -70,6 +70,14 @@
         <div id="dlg-buttons">
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="save();" style="width:90px">保存</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close');" style="width:90px">取消</a>
+        </div>
+        
+        <div id="dlg-userrole" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-userrole'">
+            <div id="dg-userrole"></div>
+        </div>
+        <div id="dlg-buttons-userrole">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUserrole();" style="width:90px">保存</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-userrole').dialog('close');" style="width:90px">取消</a>
         </div>
         
     </body>
@@ -199,6 +207,11 @@ function mod(){
                 }
             }
         });
+    } else {
+    	$.messager.alert({
+            title: '提示',
+            msg: "请选择一行"
+        });
     }
 }
 
@@ -220,7 +233,7 @@ function save(){
                     subsystemid : $('#q_subsystemid').combobox('getValue')==-1 ? '' : $('#q_subsystemid').combobox('getValue')
                 });    // reload the user data
             } else {
-                $.messager.show({
+                $.messager.alert({
                     title: '提示',
                     msg: result.msg
                 });
@@ -243,7 +256,7 @@ function del(){
                             subsystemid : $('#q_subsystemid').combobox('getValue')==-1 ? '' : $('#q_subsystemid').combobox('getValue')
                         });    // reload the user data
                     } else {
-                        $.messager.show({    // show error message
+                        $.messager.alert({    // show error message
                             title: '提示',
                             msg: result.msg
                         });
@@ -252,11 +265,76 @@ function del(){
             }
         });
     } else {
-        $.messager.show({
+        $.messager.alert({
             title: '提示',
             msg: "请选择一行"
         });
     }
+}
+
+
+function bindRole(){
+	var row = $('#dg').datagrid('getSelected');
+    if (row){
+    	$('#dlg-userrole').dialog('open').dialog('center').dialog('setTitle','绑定角色');
+    	$('#dg-userrole').datagrid({
+    	    url:"../userrole/queryUserroleList?subsystemid="+row.subsystemid+"&userid="+row.userid,
+    	    loadMsg : "数据加载中，请等待...",
+    	    rownumbers : true,
+    	    striped : true,
+    	    columns : [[
+    	    	{field:'ck', checkbox:true},
+    	        {field:'rolename', title:'角色名称', width:200},
+    	        {field:'createtime', title:'创建时间', width:130}
+    	    ]],
+    	    onLoadSuccess : function(data){
+    	    	if(data.rows.length > 0){
+    	    		$.each(data.rows, function(index, item){
+                        if(item.userroleid != null && row.userid == item.userid){
+                        	$("#dg-userrole").datagrid("selectRow", index);
+                        }
+                    });
+    	    	}	
+    	    }
+    	});
+    } else {
+        $.messager.alert({
+            title: '提示',
+            msg: "请选择一行"
+        });
+    }
+}
+
+function saveUserrole(){
+	var checkeds = $("#dg-userrole").datagrid("getSelections");
+	if(checkeds){
+		var roleids = [];
+	    $.each(checkeds, function(index, item){
+	        roleids.push(item.roleid);
+	    });
+	    
+	    var row = $('#dg').datagrid('getSelected');
+	    var params = {
+	    	roleids : roleids.join(","),
+	    	userid : row.userid
+	    };
+	    
+	    $.post('../userrole/saveUserrole', params, function(result){
+	        if (result.nResult=="0"){
+	        	$('#dlg-userrole').dialog('close');
+	        } else {
+	            $.messager.alert({    // show error message
+	                title: '提示',
+	                msg: result.msg
+	            });
+	        }
+	    },'json');
+	} else {
+		$.messager.alert({
+            title: '提示',
+            msg: "请选择一行"
+        });
+	}
 }
 </script>
 
