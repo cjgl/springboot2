@@ -2,6 +2,12 @@
 <html>
     <head>
         <#include "/INC_HEAD.HTML">
+        
+        <style type="text/css">
+	        #tabs .tabs-panels>.panel>.panel-body {
+	            overflow: hidden;
+	        }
+        </style>
     </head>
     
     <body class="easyui-layout">
@@ -35,7 +41,7 @@
 
         </div>
         <div data-options="region:'center'" >
-	        <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
+	        <div id="tabs" class="easyui-tabs" fit="true" border="false" >
 	            <div title="欢迎使用" data-options="iconCls:'icon-house'" style="padding:20px;overflow:hidden;" id="home">   
 	               <h1>欢迎使用</h1>
 	            </div>
