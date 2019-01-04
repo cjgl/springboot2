@@ -64,7 +64,9 @@ menuid int primary key IDENTITY,
 subsystemid int,
 pmenuid int,
 menuname varchar(50),
-menuurl varchar(500)
+menuurl varchar(500),
+iconcls varchar(500),
+seqno int
 );
 
 insert into t_sys_project(projectid, projectname, remark, createtime, updatetime, delflag)
@@ -81,4 +83,22 @@ values(0, 0, 0, 'admin', '超级管理员', '123456', '2018-12-27 13:15:00', '20
 
 insert into t_sys_userrole(userid, roleid)
 values(0, 0);
+
+insert into t_sys_menu(menuid, subsystemid, pmenuid, menuname, menuurl, iconcls, seqno)
+values(1, 0, 0, '系统信息管理', '', 'icon-gear', 1);
+
+insert into t_sys_menu(menuid, subsystemid, pmenuid, menuname, menuurl, iconcls, seqno)
+values(2, 0, 1, '项目管理', 'project/projectPage', 'icon-application', 1);
+
+insert into t_sys_menu(menuid, subsystemid, pmenuid, menuname, menuurl, iconcls, seqno)
+values(3, 0, 1, '子系统管理', 'subsystem/subSystemPage', 'icon-map', 2);
+
+insert into t_sys_menu(menuid, subsystemid, pmenuid, menuname, menuurl, iconcls, seqno)
+values(4, 0, 1, '角色管理', 'role/rolePage', 'icon-role', 3);
+
+insert into t_sys_menu(menuid, subsystemid, pmenuid, menuname, menuurl, iconcls, seqno)
+values(5, 0, 1, '用户管理', 'user/userPage', 'icon-user', 4);
+
+insert into t_sys_menu(menuid, subsystemid, pmenuid, menuname, menuurl, iconcls, seqno)
+values(6, 0, 0, '功能菜单', '', 'icon-applicationtree', 2);
 

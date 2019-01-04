@@ -99,7 +99,6 @@ public class ProjectController {
 			msg = "内置项目不可修改";
 		}
 		
-		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("nResult", nResult+"");
 		map.put("msg", msg);
@@ -114,7 +113,7 @@ public class ProjectController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		if(project.getProjectid() != 0) {
-			this.projectService.delProject(project);;
+			this.projectService.delProject(project);
 			map.put("nResult", "0");
 			map.put("msg", "操作成功");
 		} else {

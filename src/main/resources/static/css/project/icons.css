@@ -60,6 +60,23 @@
     background:url('icons/book_link.png') no-repeat center center;
 }
 
+/*folder*/
+.icon-folder{
+    background:url('icons/folder.png') no-repeat center center;
+}
+
+.icon-folderadd{
+    background:url('icons/folder_add.png') no-repeat center center;
+}
+
+.icon-folderdelete{
+    background:url('icons/folder_delete.png') no-repeat center center;
+}
+
+.icon-folderedit{
+    background:url('icons/folder_edit.png') no-repeat center center;
+}
+
 /*group*/
 .icon-group{
     background:url('icons/group.png') no-repeat center center;
@@ -96,6 +113,10 @@
 
 .icon-layoutedit{
     background:url('icons/layout_edit.png') no-repeat center center;
+}
+
+.icon-layoutlightning{
+    background:url('icons/layout_lightning.png') no-repeat center center;
 }
 
 .icon-layoutlink{

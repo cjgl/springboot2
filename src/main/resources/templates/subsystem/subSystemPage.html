@@ -39,7 +39,7 @@
 	        </div>
         </div>
         
-        <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+        <div id="dlg" class="easyui-dialog" style="width:500px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
             <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px;">
                 <h3>子系统信息</h3>
                 <div style="margin-bottom:10px">
@@ -49,7 +49,7 @@
                     <input id="projectid" name="projectid" required="true" label="项目名称:" style="width:100%;" data-options="editable:false,panelHeight:'auto'">
                 </div>
                 <div style="margin-bottom:10px">
-                    <input name="type" class="easyui-numberbox" required="true" data-options="min:1" label="类型:" style="width:100%;">
+                    <input name="type" class="easyui-numberbox" required="true" label="类型:" style="width:100%;" data-options="min:1,max:999">
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="remark" class="easyui-textbox" label="备注:" style="width:100%;height:60px;" data-options="multiline:true,validType:'length[0,200]'">
