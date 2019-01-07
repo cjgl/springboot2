@@ -123,6 +123,11 @@
     background:url('icons/layout_link.png') no-repeat center center;
 }
 
+/*lock*/
+.icon-lockkey{
+    background:url('icons/lock_key.png') no-repeat center center;
+}
+
 /*map*/
 .icon-map{
     background:url('icons/map.png') no-repeat center center;
