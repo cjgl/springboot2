@@ -69,6 +69,14 @@ iconcls varchar(500),
 seqno int
 );
 
+/*角色菜单关联表*/
+drop table t_sys_rolemenu if exists;
+create table t_sys_rolemenu(
+rolemenuid int primary key IDENTITY,
+roleid int,
+menuid int
+);
+
 insert into t_sys_project(projectid, projectname, remark, createtime, updatetime, delflag)
 values(0, '后台管理项目', '后台管理项目', '2018-12-27 13:15:00', '2018-12-27 13:15:00', 0);
 
@@ -102,3 +110,20 @@ values(5, 0, 1, '用户管理', 'user/userPage', 'icon-user', 4);
 insert into t_sys_menu(menuid, subsystemid, pmenuid, menuname, menuurl, iconcls, seqno)
 values(6, 0, 0, '功能菜单', '', 'icon-applicationtree', 2);
 
+insert into t_sys_rolemenu(roleid, menuid)
+values(0, 1);
+
+insert into t_sys_rolemenu(roleid, menuid)
+values(0, 2);
+
+insert into t_sys_rolemenu(roleid, menuid)
+values(0, 3);
+
+insert into t_sys_rolemenu(roleid, menuid)
+values(0, 4);
+
+insert into t_sys_rolemenu(roleid, menuid)
+values(0, 5);
+
+insert into t_sys_rolemenu(roleid, menuid)
+values(0, 6);

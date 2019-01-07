@@ -37,6 +37,8 @@
 		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-roleadd" plain="true" onclick="add();">新增</a>
 		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-roleedit" plain="true" onclick="mod();">修改</a>
 		            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-roledelete" plain="true" onclick="del();">删除</a>
+		            <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-layoutlink" plain="true" onclick="bindMenu();">绑定菜单</a>
 		        </div>
 	        </div>
         </div>
@@ -61,6 +63,14 @@
         <div id="dlg-buttons">
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="save();" style="width:90px">保存</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close');" style="width:90px">取消</a>
+        </div>
+        
+        <div id="dlg-rolemenu" class="easyui-dialog" style="width:500px;height:360px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-rolemenu'">
+            <ul id="tree-rolemenu" class="easyui-tree" style="padding:20px;"></ul>
+        </div>
+        <div id="dlg-buttons-rolemenu">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveRolemenu();" style="width:90px">保存</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-rolemenu').dialog('close');" style="width:90px">取消</a>
         </div>
         
     </body>
@@ -251,6 +261,67 @@ function del(){
         });
     }
 }
+
+
+function bindMenu(){
+	var row = $('#dg').datagrid('getSelected');
+    if (row){
+        $('#dlg-rolemenu').dialog('open').dialog('center').dialog('setTitle','绑定菜单');
+        $("#tree-rolemenu").tree({
+            url : "../rolemenu/queryRolemenuList?subsystemid="+row.subsystemid+"&roleid="+row.roleid,
+            checkbox : true,
+            cascadeCheck : false,
+            onCheck: function (node, checked) {
+                if (checked) {
+                    var parentNode = $("#tree-rolemenu").tree('getParent', node.target);
+                    if (parentNode != null) {
+                        $("#tree-rolemenu").tree('check', parentNode.target);
+                    }
+                } else {
+                    var childNode = $("#tree-rolemenu").tree('getChildren', node.target);
+                    if (childNode.length > 0) {
+                        for (var i = 0; i < childNode.length; i++) {
+                            $("#tree-rolemenu").tree('uncheck', childNode[i].target);
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        $.messager.alert({
+            title: '提示',
+            msg: "请选择一行"
+        });
+    }
+}
+
+function saveRolemenu(){
+	var checkNodes = $("#tree-rolemenu").tree("getChecked");
+	console.log(checkNodes);
+	
+	var menuids = [];
+    $.each(checkNodes, function(index, item){
+    	menuids.push(item.id);
+    });
+    
+    var row = $('#dg').datagrid('getSelected');
+    var params = {
+    	menuids : menuids.join(","),
+        roleid : row.roleid
+    };
+    
+    $.post('../rolemenu/saveRolemenu', params, function(result){
+        if (result.nResult=="0"){
+            $('#dlg-rolemenu').dialog('close');
+        } else {
+            $.messager.alert({    // show error message
+                title: '提示',
+                msg: result.msg
+            });
+        }
+    },'json');
+}
+
 </script>
 
 </html>

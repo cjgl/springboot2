@@ -22,6 +22,7 @@ import cn.cjgl.springboot.service.UserroleService;
 @Controller
 @RequestMapping("userrole")
 public class UserroleController {
+	
 	@Autowired
     private UserroleService userroleService;
 	
