@@ -41,9 +41,9 @@ public class SubSystemController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/querySubSystemJson")
+	@RequestMapping("/querySubSystemList")
 	@ResponseBody
-	public Map<String, Object> querySubSystemJson(SubSystem subSystem,  Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> querySubSystemList(SubSystem subSystem,  Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
 		PageHelper.offsetPage((page-1)*rows, rows, true);
 		//PageHelper.orderBy(sortName + " " + sortOrder);
 		PageHelper.orderBy("t.createtime DESC");

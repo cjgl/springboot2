@@ -41,9 +41,9 @@ public class RoleController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/queryRoleJson")
+	@RequestMapping("/queryRoleList")
 	@ResponseBody
-	public Map<String, Object> queryRoleJson(Role role,  Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> queryRoleList(Role role,  Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
 		PageHelper.offsetPage((page-1)*rows, rows, true);
 		//PageHelper.orderBy(sortName + " " + sortOrder);
 		PageHelper.orderBy("t.createtime DESC");

@@ -40,9 +40,9 @@ public class ProjectController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/queryProjectJson")
+	@RequestMapping("/queryProjectList")
 	@ResponseBody
-	public Map<String, Object> queryProjectJson(Project project,  Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> queryProjectList(Project project,  Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
 		PageHelper.offsetPage((page-1)*rows, rows, true);
 		//PageHelper.orderBy(sortName + " " + sortOrder);
 		PageHelper.orderBy("t.createtime DESC");

@@ -40,9 +40,9 @@ public class UserController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/queryUserJson")
+	@RequestMapping("/queryUserList")
 	@ResponseBody
-	public Map<String, Object> queryUserJson(User user, Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> queryUserList(User user, Integer page, Integer rows, String sortName, String sortOrder, HttpServletRequest request, HttpServletResponse response) {
 		//PageHelper.startPage(offset, limit, sort + " " + order);
 		PageHelper.offsetPage((page-1)*rows, rows, true);
 		PageHelper.orderBy("t.createtime DESC");
