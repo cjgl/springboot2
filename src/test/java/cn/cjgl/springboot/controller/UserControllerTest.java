@@ -48,7 +48,7 @@ public class UserControllerTest {
 		log.info("testQueryUsers");
 		
 		request.setAttribute("rID", "123");
-		session.setAttribute("sID", "sID=test");
+		session.setAttribute("sID", "test");
 		
 		mockMvc.perform((post("/user/queryUserList").param("page", "1").param("rows", "20").session(session))
 				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -75,5 +75,26 @@ public class UserControllerTest {
     	log.info(result.getResponse().getContentAsString());
 	}
 	
+	@Test
+	public void testAddUser() throws Exception {
+		log.info("testAddUser");
+		
+		request.setAttribute("rID", "123");
+		session.setAttribute("sID", "test");
+		
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+    	map.add("projectid", "1");
+    	map.add("subsystemid", "1");
+    	map.add("loginname", "test");
+    	map.add("username", "test");
+    	map.add("pwd", "123456");
+
+    	MvcResult result = mockMvc.perform((post("/user/addUser.do").session(session).params(map))
+				.accept(MediaType.TEXT_HTML_VALUE))
+				.andExpect(status().isOk())
+				.andDo(print()).andReturn();
+    	
+    	log.info(result.getResponse().getContentAsString());
+	}
 
 }
