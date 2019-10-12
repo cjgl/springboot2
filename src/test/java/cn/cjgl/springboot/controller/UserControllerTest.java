@@ -1,12 +1,8 @@
 package cn.cjgl.springboot.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,9 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
-
-import net.minidev.json.JSONObject;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -54,7 +50,7 @@ public class UserControllerTest {
 		request.setAttribute("rID", "123");
 		session.setAttribute("sID", "sID=test");
 		
-		mockMvc.perform(post("/queryUsers").session(session)
+		mockMvc.perform((post("/user/queryUserList").param("page", "1").param("rows", "20").session(session))
 				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(status().isOk())
 				.andDo(print());
@@ -64,28 +60,20 @@ public class UserControllerTest {
 	public void testQueryUsersJson() throws Exception {
 		log.info("testQueryUsersJson");
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-    	map.put("address", "合肥");
-    	
-        MvcResult result = mockMvc.perform(post("/queryUsersJson").content(JSONObject.toJSONString(map)))
-        		.andExpect(status().isOk())// 模拟向testRest发送get请求  
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8  
-                .andReturn();// 返回执行请求的结果  
-		
-		log.info(result.getResponse().getContentAsString());
-	}
-	
-	@Test
-	public void testQueryUsersByPage() throws Exception {
-		log.info("testQueryUsers");
-		
 		request.setAttribute("rID", "123");
-		session.setAttribute("sID", "sID=test");
+		session.setAttribute("sID", "test");
 		
-		mockMvc.perform(post("/queryUsersByPage").session(session)
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+    	map.add("page", "1");
+    	map.add("rows", "20");
+
+    	MvcResult result = mockMvc.perform((post("/user/queryUserList").session(session).params(map))
 				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(status().isOk())
-				.andDo(print());
+				.andDo(print()).andReturn();
+    	
+    	log.info(result.getResponse().getContentAsString());
 	}
+	
 
 }
