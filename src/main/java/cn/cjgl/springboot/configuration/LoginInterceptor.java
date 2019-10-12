@@ -15,7 +15,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		// TODO Auto-generated method stub
 		log.debug("---------------------开始请求地址拦截----------------------------");
 		//HttpSession session = request.getSession();
 		//User user = (User)session.getAttribute("s_user");
@@ -27,7 +26,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		// TODO Auto-generated method stub
 		log.debug("--------------处理请求完成后视图渲染之前的处理操作---------------");
 		HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
 	}
@@ -35,7 +33,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		// TODO Auto-generated method stub
 		 log.debug("---------------视图渲染之后的操作-------------------------");
 		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
 	}
